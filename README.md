@@ -1,36 +1,168 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js — Client-Side vs Server-Side Rendering
 
-## Getting Started
+## React vs Next.js
 
-First, run the development server:
+React is mainly a UI library, while Next.js is a React framework that provides features such as Server Components, Client Components, Server-Side Rendering (SSR), file-based routing, backend/API functionality, SEO support, and performance optimizations.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## React — Client-Side Rendering
+
+In a typical React + Vite application, components run in the browser by default.
+
+```text
+Browser
+   ↓
+Downloads JavaScript
+   ↓
+React runs
+   ↓
+React generates the UI
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The initial HTML can be very minimal:
+Example:
+        <div id="root"></div>
+        <script src="app.js"></script>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+React then executes JavaScript in the browser and generates the actual UI.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Next.js — Server Components
 
-## Learn More
+In the Next.js App Router, components are Server Components by default.
 
-To learn more about Next.js, take a look at the following resources:
+    export default function Page() {
+    return <h1>Hello World</h1>;
+    }
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Next.js can render this component on the server and send HTML containing the actual page content to the browser.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```text 
+Browser
+   ↓
+Request
+   ↓
+Next.js Server
+   ↓
+React Component rendered
+   ↓
+HTML generated
+   ↓
+Browser
+```
+For example, the browser can receive:
+    <h1>Hello World</h1>
+    <p>This content is already present in the HTML.</p>
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# When to Use "use client"
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+By default, Next.js components are Server Components.
+If a component needs client-side interactivity, add: "use client" at the top of the file.
+
+Example:
+    "use client";
+
+    export default function Button() {
+        function handleClick() {
+            console.log("Clicked!");
+        }
+        return (
+            <button onClick={handleClick}>
+            Click me
+            </button>
+        );
+    }
+
+## "use client" is generally required when using:
+    onClick
+    onChange
+    useState
+    useEffect
+    useRef
+    Browser APIs such as window or localStorage
+
+
+Easy Rule
+```text 
+No client-side interaction
+        ↓
+Server Component
+        ↓
+No "use client"
+
+Client-side interaction/state
+        ↓
+Client Component
+        ↓
+"use client"
+```
+
+Don't add "use client" to every component. Use it only when the component actually needs client-side functionality.
+
+# How Next.js Helps with SEO
+
+One important advantage of server rendering is that Next.js can send HTML that already contains the page's meaningful content.
+
+    React + Vite
+
+    The initial HTML can be:
+    <div id="root"></div>
+    <script src="app.js"></script>
+
+    Then:
+    ```text
+    JavaScript
+        ↓
+    React
+        ↓
+    Actual page content
+    Next.js
+    ```
+
+    Next.js can generate the HTML on the server:
+    <h1>Best Programming Courses</h1>
+    <p>Learn programming...</p>
+
+    Then send it to the browser.
+    ```text
+    Next.js Server
+        ↓
+    HTML containing page content
+        ↓
+    Browser / Search Engine
+    ```
+
+This can make it easier for search-engine crawlers to discover and understand important page content from the initial HTML.
+
+## React applications can also be indexed by modern search engines because they can execute JavaScript. SEO is not dependent only on server rendering; metadata, content quality, semantic HTML, performance, links, structured data, etc. also matter.
+
+# Why Does Next.js HTML Contain More Information?
+
+Next.js does not create a different type of HTML. Both React and Next.js ultimately produce normal HTML.
+
+The main difference is when the UI content is generated.
+
+React + Vite
+```text
+Initial HTML
+      ↓
+Minimal HTML
+      ↓
+JavaScript executes
+      ↓
+React generates UI
+```
+
+Next.js Server Rendering
+```text
+Next.js Server
+      ↓
+Renders React Component
+      ↓
+HTML contains page content
+      ↓
+Browser receives HTML
+```
+
+## Therefore: React can generate the UI in the browser, while Next.js can generate the HTML on the server before sending it to the browser. 
