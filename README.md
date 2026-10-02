@@ -20,8 +20,9 @@ React runs
 React generates the UI
 ```
 
-The initial HTML can be very minimal:
+The initial HTML can be very minimal
 Example:
+
         <div id="root"></div>
         <script src="app.js"></script>
 
@@ -32,7 +33,7 @@ React then executes JavaScript in the browser and generates the actual UI.
 In the Next.js App Router, components are Server Components by default.
 
     export default function Page() {
-    return <h1>Hello World</h1>;
+        return <h1>Hello World</h1>;
     }
 
 Next.js can render this component on the server and send HTML containing the actual page content to the browser.
@@ -51,6 +52,7 @@ HTML generated
 Browser
 ```
 For example, the browser can receive:
+
     <h1>Hello World</h1>
     <p>This content is already present in the HTML.</p>
 
@@ -104,38 +106,40 @@ Don't add "use client" to every component. Use it only when the component actual
 
 One important advantage of server rendering is that Next.js can send HTML that already contains the page's meaningful content.
 
-    React + Vite
+React + Vite
 
-    The initial HTML can be:
+The initial HTML can be:
+
     <div id="root"></div>
     <script src="app.js"></script>
 
-    Then:
-    ```text
+Then:
+```text
     JavaScript
         ↓
     React
         ↓
     Actual page content
     Next.js
-    ```
+```
 
-    Next.js can generate the HTML on the server:
+Next.js can generate the HTML on the server:
+
     <h1>Best Programming Courses</h1>
     <p>Learn programming...</p>
 
-    Then send it to the browser.
-    ```text
+Then send it to the browser.
+```text
     Next.js Server
         ↓
     HTML containing page content
         ↓
     Browser / Search Engine
-    ```
+```
 
 This can make it easier for search-engine crawlers to discover and understand important page content from the initial HTML.
 
-## React applications can also be indexed by modern search engines because they can execute JavaScript. SEO is not dependent only on server rendering; metadata, content quality, semantic HTML, performance, links, structured data, etc. also matter.
+### React applications can also be indexed by modern search engines because they can execute JavaScript. SEO is not dependent only on server rendering; metadata, content quality, semantic HTML, performance, links, structured data, etc. also matter.
 
 # Why Does Next.js HTML Contain More Information?
 
@@ -165,4 +169,4 @@ HTML contains page content
 Browser receives HTML
 ```
 
-## Therefore: React can generate the UI in the browser, while Next.js can generate the HTML on the server before sending it to the browser. 
+### Therefore: React can generate the UI in the browser, while Next.js can generate the HTML on the server before sending it to the browser. 
